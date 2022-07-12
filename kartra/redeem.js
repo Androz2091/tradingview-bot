@@ -78,7 +78,7 @@ module.exports.redeem = async (msg) => {
 	const guild = await bot.guilds.fetch(globals.DISCORD_GUILD);
 	const logChannel = await guild.channels.fetch(globals.DISCORD_LOG_CHANNEL);
 
-	await msg.reply('Perfect! Please enter your Trading View username below.');
+	await reply('Perfect! Please enter your Trading View username below.');
 	waitingForUsernames.add(msg.author.id);
 	
 
