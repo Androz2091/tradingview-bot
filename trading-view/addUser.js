@@ -1,7 +1,7 @@
 const fetch = require('node-fetch');
 
-module.exports.add = async function (username) {
-	fetch("https://www.tradingview.com/pine_perm/add/", {
+module.exports.add = (username) => {
+	return fetch("https://www.tradingview.com/pine_perm/add/", {
 		"headers": {
 			"accept": "application/json, text/javascript, */*; q=0.01",
 			"accept-language": "en-US,en;q=0.9",
@@ -20,5 +20,5 @@ module.exports.add = async function (username) {
 		},
 		"body": "pine_id=PUB%3B691c0e71e90045b6956561de465101cc&username_recip=" + username,
 		"method": "POST"
-		});
+	}).then((res) => res.json());
 };

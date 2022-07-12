@@ -1,6 +1,6 @@
 const fetch = require('node-fetch');
 
-module.exports.remove = async function (username) {
+module.exports.remove = (username) => {
 	fetch("https://www.tradingview.com/pine_perm/remove/", {
 		"headers": {
 			"accept": "application/json, text/javascript, */*; q=0.01",
@@ -20,5 +20,5 @@ module.exports.remove = async function (username) {
 		},
 		"body": "pine_id=PUB%3B691c0e71e90045b6956561de465101cc&username_recip=" + username,
 		"method": "POST"
-		});
+	}).then((res) => res.json());
 };
