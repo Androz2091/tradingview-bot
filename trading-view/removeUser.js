@@ -1,3 +1,5 @@
+const fetch = require('node-fetch');
+
 module.exports.remove = async function (username) {
 	fetch("https://www.tradingview.com/pine_perm/remove/", {
 		"headers": {

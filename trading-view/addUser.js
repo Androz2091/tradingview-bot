@@ -1,3 +1,5 @@
+const fetch = require('node-fetch');
+
 module.exports.add = async function (username) {
 	fetch("https://www.tradingview.com/pine_perm/add/", {
 		"headers": {
