@@ -4,8 +4,62 @@ const globals = require('../util/globals');
 const { JSONArray } = require('../util/file');
 const { add } = require('../trading-view/addUser');
 
+const waitingForUsernames = new Set();
+
 module.exports.redeem = async (msg) => {
 	await msg.delete();
+
+	if (waitingForUsernames.has(msg.author.id)) {
+	
+		let tradingViewUsername = msg.content;
+		while (1) {
+			try {
+				await add(tradingViewUsername);
+				break;
+			} catch (e) {
+				console.error(e);
+				msg.author.send('Invalid Tradeview username. Please try again.');
+			}
+		}
+		logChannel.send({
+			embeds: [
+				new MessageEmbed()
+					.setTitle('Access Redeemed')
+					.addFields(
+						{
+							name: 'User',
+							value: `${msg.member.user.tag} \`(${msg.member.id})\``,
+						},
+						{ name: 'Email', value: email }
+					)
+					.setColor('AQUA'),
+			],
+		});
+
+		logChannel.send({
+			embeds: [
+				new MessageEmbed()
+					.setTitle('New Member Added To Trading View')
+					.setFields(
+						{ name: 'Trading View Username', value: tradingViewUsername },
+						{ name: 'Email', value: email }
+					)
+					.setColor('GREEN'),
+			],
+		});
+
+		db.set(`tradingview_${msg.author.id}`, tradingViewUsername);
+
+		await msg.member.roles.add(globals.DISCORD_MEMBER_ROLE);
+		await msg.author.send(
+			'Access successfully redeemed!' +
+				' You can now access the script on trading view here: ' +
+				'<https://www.tradingview.com/script/7DeN8MqF-CWG-ALGO-V-1-TrendSetter/>'
+		);
+
+		waitingForUsernames.delete(msg.author.id);
+		
+	}
 
 	const reply = (content) => msg.channel.send(`${msg.author}, ${content}`);
 
@@ -24,70 +78,8 @@ module.exports.redeem = async (msg) => {
 	const guild = await bot.guilds.fetch(globals.DISCORD_GUILD);
 	const logChannel = await guild.channels.fetch(globals.DISCORD_LOG_CHANNEL);
 
-	try {
-		await msg.author.send('Please enter your Trading View username below.');
-	} catch {
-		return await msg.channel.send(
-			`${msg.member} please enable your DMs and try again.`
-		);
-	}
-	let tradingViewUsername;
-	while (1) {
-		try {
-			tradingViewUsername = (
-				await msg.author.dmChannel.awaitMessages({
-					filter: (response) => response.author.id == msg.author.id,
-					max: 1,
-					time: 30 * 60 * 1000,
-					errors: ['time'],
-				})
-			)?.first()?.content;
-		} catch {
-			return msg.author.send(
-				'Access redemtion failed as no trading view username has been provided in time. Please try redeem the access again.'
-			);
-		}
-		try {
-			await add(tradingViewUsername);
-			break;
-		} catch {
-			msg.author.send('Invalid username. Please try again.');
-		}
-	}
-	logChannel.send({
-		embeds: [
-			new MessageEmbed()
-				.setTitle('Access Redeemed')
-				.addFields(
-					{
-						name: 'User',
-						value: `${msg.member.user.tag} \`(${msg.member.id})\``,
-					},
-					{ name: 'Email', value: email }
-				)
-				.setColor('AQUA'),
-		],
-	});
-
-	logChannel.send({
-		embeds: [
-			new MessageEmbed()
-				.setTitle('New Member Added To Trading View')
-				.setFields(
-					{ name: 'Trading View Username', value: tradingViewUsername },
-					{ name: 'Email', value: email }
-				)
-				.setColor('GREEN'),
-		],
-	});
-
-	db.set(`tradingview_${msg.author.id}`, tradingViewUsername);
-
-	await msg.member.roles.add(globals.DISCORD_MEMBER_ROLE);
-	await msg.author.send(
-		'Access successfully redeemed!' +
-			' You can now access the script on trading view here: ' +
-			'<https://www.tradingview.com/script/7DeN8MqF-CWG-ALGO-V-1-TrendSetter/>'
-	);
+	await msg.reply('Perfect! Please enter your Trading View username below.');
+	waitingForUsernames.add(msg.author.id);
+	
 
 };
