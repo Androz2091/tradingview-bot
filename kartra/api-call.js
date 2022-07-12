@@ -33,7 +33,7 @@ async function apiCall(data) {
 		}
 
 	} else if (data.action === 'membership_revoked') {
-		const memberId = db.all().find((entry) => entry.value === email)?.key?.split('_')[1];
+		const memberId = db.all().find((entry) => entry.data === email)?.key?.split('_')[1];
 		const tradingViewUsername = db.all().find((entry) => entry.key === `tradingview_${memberId}`)?.value;
 
 
@@ -59,7 +59,6 @@ async function apiCall(data) {
 
 			member.roles.remove(globals.DISCORD_MEMBER_ROLE);
 
-			members.remove((m) => m.email == email);
 		} else {
 			await logChannel.send({
 				embeds: [
