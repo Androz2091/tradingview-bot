@@ -65,22 +65,26 @@ module.exports.redeem = async (msg) => {
 
 		}
 		
+	} else {
+
+		if (!(db.get('emails') || []).includes(msg.content)) {
+			return reply('invalid email address.');
+		}
+	
+		const previousUserId = db.all().some((entry) => entry.value === msg.content);
+		if (previousUserId && previousUserId !== msg.author.id) {
+			return reply('this email is already linked to another Discord account.');
+		}
+	
+		const email = msg.content;
+		db.set(`email_${msg.author.id}`, email);
+	
+		await reply('Perfect! Please enter your Trading View username below.');
+		waitingForUsernames.set(msg.author.id, email);
+
 	}
 
-	if (!(db.get('emails') || []).includes(msg.content)) {
-		return reply('invalid email address.');
-	}
-
-	const previousUserId = db.all().some((entry) => entry.value === msg.content);
-	if (previousUserId && previousUserId !== msg.author.id) {
-		return reply('this email is already linked to another Discord account.');
-	}
-
-	const email = msg.content;
-	db.set(`email_${msg.author.id}`, email);
-
-	await reply('Perfect! Please enter your Trading View username below.');
-	waitingForUsernames.set(msg.author.id, email);
+	
 	
 
 };
