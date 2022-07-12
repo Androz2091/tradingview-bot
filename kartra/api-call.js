@@ -43,7 +43,7 @@ async function apiCall(data) {
 		const tradingViewUsername = db.all().find((entry) => entry.key === `tradingview_${memberId}`)?.value;
 
 
-		if (member?.id) {
+		if (memberId) {
 
 			const member = await guild.members.fetch(memberId);
 
