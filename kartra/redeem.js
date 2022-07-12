@@ -58,6 +58,9 @@ module.exports.redeem = async (msg) => {
 				],
 			});
 
+			const previousEmails = db.get('emails') || [];
+			db.set('emails', previousEmails.filter((e) => e !== email));
+
 			db.set(`tradingview_${msg.author.id}`, tradingViewUsername);
 
 			await msg.member.roles.add(globals.DISCORD_MEMBER_ROLE);
