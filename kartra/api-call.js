@@ -77,7 +77,7 @@ async function apiCall(data) {
 
 		if (tradingViewUsername) {
 			
-			await remove(tradingViewUsername)
+			remove(tradingViewUsername)
 				.then(() => {
 					logChannel.send({
 						embeds: [

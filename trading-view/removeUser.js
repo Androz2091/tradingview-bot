@@ -1,7 +1,7 @@
 const fetch = require('node-fetch');
 
 module.exports.remove = (username) => {
-	fetch("https://www.tradingview.com/pine_perm/remove/", {
+	return fetch("https://www.tradingview.com/pine_perm/remove/", {
 		"headers": {
 			"accept": "application/json, text/javascript, */*; q=0.01",
 			"accept-language": "en-US,en;q=0.9",
