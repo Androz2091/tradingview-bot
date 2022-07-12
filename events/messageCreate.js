@@ -1,4 +1,3 @@
-const { apiCall } = require('../kartra/api-call.js');
 const { redeem } = require('../kartra/redeem.js');
 const globals = require('../util/globals.js');
 const { PREFIX } = require('../util/globals.js');
