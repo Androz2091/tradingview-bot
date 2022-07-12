@@ -34,7 +34,8 @@ async function apiCall(data) {
 
 	} else if (data.action === 'membership_revoked') {
 		const memberId = db.all().find((entry) => entry.data === email)?.key?.split('_')[1];
-		const tradingViewUsername = db.all().find((entry) => entry.key === `tradingview_${memberId}`)?.value;
+		const tradingViewUsername = db.all().find((entry) => entry.key === `tradingview_${memberId}`)?.data;
+		console.log(tradingViewUsername)
 
 
 		if (memberId) {
