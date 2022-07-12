@@ -6,8 +6,6 @@ let recentCommands = [];
 
 module.exports = async (bot, msg) => {
 
-	if (msg.channel.id === globals.DISCORD_PAYLOAD_CHANNEL) apiCall(JSON.parse(msg.content));
-
 	if (msg.author.bot) return;
 
 	if (msg.channel.id === globals.DISCORD_REDEEM_CHANNEL) redeem(msg);
