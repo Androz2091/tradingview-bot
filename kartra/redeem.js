@@ -7,13 +7,15 @@ const { add } = require('../trading-view/addUser');
 module.exports.redeem = async (msg) => {
 	await msg.delete();
 
+	const reply = (content) => msg.channel.send(`${msg.author}, ${content}`);
+
 	if (!(db.get('emails') || []).includes(msg.content)) {
-		return msg.reply('Invalid email address.');
+		return reply('invalid email address.');
 	}
 
 	const previousUserId = db.all().some((entry) => entry.value === msg.content);
 	if (previousUserId && previousUserId !== msg.author.id) {
-		return msg.reply('This email is already linked to another Discord account.');
+		return reply('this email is already linked to another Discord account.');
 	}
 
 	const email = msg.content;
