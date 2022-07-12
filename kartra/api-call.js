@@ -14,12 +14,6 @@ async function apiCall(data) {
 	const logChannel = await guild.channels.fetch(globals.DISCORD_LOG_CHANNEL);
 
 	if (data.action === 'membership_granted') {
-		const newCode = codeGen();
-		codes.push({
-			email,
-			name,
-			code: newCode,
-		});
 
 		logChannel.send({
 			embeds: [
