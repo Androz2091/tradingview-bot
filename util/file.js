@@ -6,7 +6,7 @@ const {
 	existsSync,
 } = require('fs');
 const { get } = require('https');
-const bot = require('../index');
+const {bot} = require('../index');
 
 class JSONDatabase {
 	constructor(path) {

@@ -8,14 +8,15 @@ const path = require('path');
 
 const Database = require('easy-json-database');
 const db = new Database();
-module.exports.db = db;
 
 const { TOKEN } = require('./util/globals.js');
 
 const bot = new Client({
 	intents: ['GUILD_MESSAGES', 'GUILDS', 'GUILD_MEMBERS', 'DIRECT_MESSAGES'],
 });
-module.exports = bot;
+module.exports = {
+	bot, db
+};
 bot.commands = new Collection();
 
 getFiles('./commands/').then((files) => {

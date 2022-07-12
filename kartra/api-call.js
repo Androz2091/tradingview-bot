@@ -1,5 +1,5 @@
 const { MessageEmbed } = require('discord.js');
-const bot = require('..');
+const {bot} = require('..');
 const { codes, members } = require('./redeem');
 const globals = require('../util/globals');
 const { add } = require('../trading-view/addUser');
