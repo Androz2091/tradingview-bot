@@ -1,5 +1,5 @@
 const { MessageEmbed } = require('discord.js');
-const {bot} = require('..');
+const {bot, db} = require('..');
 const { codes, members } = require('./redeem');
 const globals = require('../util/globals');
 const { add } = require('../trading-view/addUser');
@@ -33,14 +33,14 @@ async function apiCall(data) {
 			],
 		});
 
-		const previousEmails = bot.db.get('emails') ?? [];
+		const previousEmails = db.get('emails') ?? [];
 		if (!previousEmails.includes(email)) {
-			bot.db.set(`emails`, [...previousEmails, email]);
+			db.set(`emails`, [...previousEmails, email]);
 		}
 
 	} else if (data.action === 'membership_revoked') {
-		const memberId = bot.db.all().find((entry) => entry.value === email)?.key?.split('_')[1];
-		const tradingViewUsername = bot.db.all().find((entry) => entry.key === `tradingview_${memberId}`)?.value;
+		const memberId = db.all().find((entry) => entry.value === email)?.key?.split('_')[1];
+		const tradingViewUsername = db.all().find((entry) => entry.key === `tradingview_${memberId}`)?.value;
 
 
 		if (member?.id) {

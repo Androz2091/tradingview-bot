@@ -1,5 +1,5 @@
 const { MessageEmbed } = require('discord.js');
-const {bot} = require('..');
+const {bot, db} = require('..');
 const globals = require('../util/globals');
 const { JSONArray } = require('../util/file');
 const { add } = require('../trading-view/addUser');
@@ -7,17 +7,17 @@ const { add } = require('../trading-view/addUser');
 module.exports.redeem = async (msg) => {
 	await msg.delete();
 
-	if (!(bot.db.get('emails') || []).includes(msg.content)) {
+	if (!(db.get('emails') || []).includes(msg.content)) {
 		return msg.reply('Invalid email address.');
 	}
 
-	const previousUserId = bot.db.all().some((entry) => entry.value === msg.content);
+	const previousUserId = db.all().some((entry) => entry.value === msg.content);
 	if (previousUserId && previousUserId !== msg.author.id) {
 		return msg.reply('This email is already linked to another Discord account.');
 	}
 
 	const email = msg.content;
-	bot.db.set(`email_${msg.author.id}`, email);
+	db.set(`email_${msg.author.id}`, email);
 
 	const guild = await bot.guilds.fetch(globals.DISCORD_GUILD);
 	const logChannel = await guild.channels.fetch(globals.DISCORD_LOG_CHANNEL);
@@ -79,7 +79,7 @@ module.exports.redeem = async (msg) => {
 		],
 	});
 
-	bot.db.set(`tradingview_${msg.author.id}`, tradingViewUsername);
+	db.set(`tradingview_${msg.author.id}`, tradingViewUsername);
 
 	await msg.member.roles.add(globals.DISCORD_MEMBER_ROLE);
 	await msg.author.send(
