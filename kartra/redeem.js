@@ -64,7 +64,7 @@ module.exports.redeem = async (msg) => {
 			db.set(`tradingview_${msg.author.id}`, tradingViewUsername);
 
 			await msg.member.roles.add(globals.DISCORD_MEMBER_ROLE);
-			await msg.reply(
+			await reply(
 				'Access successfully redeemed!' +
 					' You can now access the script on trading view here: ' +
 					'<https://www.tradingview.com/script/7DeN8MqF-CWG-ALGO-V-1-TrendSetter/>'
