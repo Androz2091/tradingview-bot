@@ -4,7 +4,7 @@ const globals = require('../util/globals');
 const { JSONArray } = require('../util/file');
 const { add } = require('../trading-view/addUser');
 
-const waitingForUsernames = new Set();
+const waitingForUsernames = new Map();
 
 module.exports.redeem = async (msg) => {
 
@@ -14,9 +14,11 @@ module.exports.redeem = async (msg) => {
 
 	if (waitingForUsernames.has(msg.author.id)) {
 	
-		let tradingViewUsername = msg.content;
+		const email = waitingForUsernames.get(msg.author.id);
+		const tradingViewUsername = msg.content;
 		const data = await add(tradingViewUsername);
-		if (data.code === 'username_recip_not_found') {
+		console.log(data)
+		if (data.status !== 'ok' || data.code === 'username_recip_not_found') {
 			reply('Invalid Tradeview username. Please try again.');
 		} else {
 
@@ -77,11 +79,8 @@ module.exports.redeem = async (msg) => {
 	const email = msg.content;
 	db.set(`email_${msg.author.id}`, email);
 
-	const guild = await bot.guilds.fetch(globals.DISCORD_GUILD);
-	const logChannel = await guild.channels.fetch(globals.DISCORD_LOG_CHANNEL);
-
 	await reply('Perfect! Please enter your Trading View username below.');
-	waitingForUsernames.add(msg.author.id);
+	waitingForUsernames.set(msg.author.id, email);
 	
 
 };
