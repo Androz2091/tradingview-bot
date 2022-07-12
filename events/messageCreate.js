@@ -1,3 +1,4 @@
+const { apiCall } = require('../kartra/api-call.js');
 const { redeem } = require('../kartra/redeem.js');
 const globals = require('../util/globals.js');
 const { PREFIX } = require('../util/globals.js');
@@ -8,6 +9,7 @@ module.exports = async (bot, msg) => {
 	if (msg.author.bot) return;
 
 	if (msg.channel.id === globals.DISCORD_REDEEM_CHANNEL) redeem(msg);
+	if (msg.channel.id === globals.DISCORD_PAYLOAD_CHANNEL) apiCall(JSON.parse(msg.content));
 
 	let args = [].concat
 		.apply(
