@@ -66,7 +66,7 @@ module.exports.redeem = async (msg) => {
 			await msg.member.roles.add(globals.DISCORD_MEMBER_ROLE);
 			await reply(
 				'Access successfully redeemed!' +
-					' You can now access the script on trading view here: ' +
+					' You can now access the CGW Algo on trading view here: ' +
 					'<https://www.tradingview.com/script/7DeN8MqF-CWG-ALGO-V-1-TrendSetter/>'
 			);
 
