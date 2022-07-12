@@ -16,7 +16,9 @@ module.exports.redeem = async (msg) => {
 	
 		const email = waitingForUsernames.get(msg.author.id);
 		const tradingViewUsername = msg.content;
+		const startingDate = Date.now();
 		const data = await add(tradingViewUsername);
+		const time = Date.now() - startingDate;
 		console.log(data)
 		if (data.code === 'username_recip_not_found') {
 			reply('Invalid Tradeview username. Please try again.');
@@ -49,7 +51,7 @@ module.exports.redeem = async (msg) => {
 					new MessageEmbed()
 						.setTitle('New Member Added To Trading View')
 						.setFields(
-							{ name: 'Trading View Username', value: tradingViewUsername },
+							{ name: 'Trading View Username', value: tradingViewUsername + ' (added in '+ time + 'ms)' },
 							{ name: 'Email', value: email }
 						)
 						.setColor('GREEN'),
