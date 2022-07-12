@@ -18,9 +18,13 @@ module.exports.redeem = async (msg) => {
 		const tradingViewUsername = msg.content;
 		const data = await add(tradingViewUsername);
 		console.log(data)
-		if (data.status !== 'ok' || data.code === 'username_recip_not_found') {
+		if (data.code === 'username_recip_not_found') {
 			reply('Invalid Tradeview username. Please try again.');
 		} else {
+
+			if (data.status === 'exists') {
+				reply('This username is already connected. Skipping addition...');
+			}
 
 			const guild = await bot.guilds.fetch(globals.DISCORD_GUILD);
 			const logChannel = await guild.channels.fetch(globals.DISCORD_LOG_CHANNEL);
