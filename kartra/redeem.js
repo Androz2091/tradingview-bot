@@ -76,7 +76,7 @@ module.exports.redeem = async (msg) => {
 		
 	} else {
 
-		if (!(db.get('emails') || []).includes(msg.content)) {
+		if (!(db.get('emails') || []).map((e) => e.toLowerCase()).includes(msg.content.toLowerCase())) {
 			return reply('invalid email address.');
 		}
 	
